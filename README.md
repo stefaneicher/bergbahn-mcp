@@ -32,9 +32,9 @@ npx @modelcontextprotocol/inspector   # zum Ausprobieren im Browser
 
 Jeder Push nach `main` testet und veröffentlicht den Worker automatisch (`.github/workflows/deploy.yml`). Einmalig nötig:
 
-1. Cloudflare-Konto (Gratis-Plan genügt). Account-ID steht im Dashboard unter «Workers & Pages».
+1. Cloudflare-Konto (Gratis-Plan genügt). Die Account-ID steht in `wrangler.toml` (kein Geheimnis).
 2. API-Token erstellen: My Profile → API Tokens → Vorlage «Edit Cloudflare Workers».
-3. Im GitHub-Repo unter Settings → Secrets and variables → Actions zwei Secrets anlegen: `CLOUDFLARE_ACCOUNT_ID` und `CLOUDFLARE_API_TOKEN`.
+3. Im GitHub-Repo unter Settings → Secrets and variables → Actions das Secret `CLOUDFLARE_API_TOKEN` anlegen.
 
 Danach ist der Server unter `https://bergbahn-mcp.<subdomain>.workers.dev/mcp` erreichbar.
 

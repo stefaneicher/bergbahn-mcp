@@ -1,4 +1,5 @@
 name = "bergbahn-mcp"
+account_id = "25dd97ce73f59547d0f84b7e99341d74"
 main = "src/index.ts"
 compatibility_date = "2026-10-01"
 compatibility_flags = ["nodejs_compat"]
