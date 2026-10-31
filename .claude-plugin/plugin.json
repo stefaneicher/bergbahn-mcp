@@ -1,6 +1,6 @@
 {
   "name": "bergbahn-info",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Demo: Bahnen, Lifte, Pisten und Schneebericht eines erfundenen Skigebiets, dazu echte Zugverbindungen der Schweiz.",
   "author": {"name": "Stefan Eicher"},
   "repository": "https://github.com/stefaneicher/bergbahn-mcp",

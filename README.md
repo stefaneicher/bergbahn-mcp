@@ -1,8 +1,8 @@
 # Bergbahn-Info – Demo-MCP-Server
 
-Lernprojekt: ein eigener MCP-Server (Model Context Protocol), der als Plugin bzw. Connector in Claude und ChatGPT eingebunden wird.
+Lernprojekt: ein eigener MCP-Server (Model Context Protocol) auf Cloudflare Workers, eingebunden als Plugin bzw. Connector in Claude und ChatGPT.
 
-- **Bahnen, Lifte, Pisten, Schneebericht:** erfundenes Skigebiet «Eigerblick» mit zwei Gebieten (`sonnenhang`, `gletscherblick`), Testdaten in `src/bergbahn_mcp/daten.json`.
+- **Bahnen, Lifte, Pisten, Schneebericht:** erfundenes Skigebiet «Eigerblick» mit zwei Gebieten (`sonnenhang`, `gletscherblick`), Testdaten in `src/daten.json`.
 - **Zugverbindungen:** echte Fahrplandaten über [transport.opendata.ch](https://transport.opendata.ch).
 
 Inoffizielles Demoprojekt, keine Verbindung zu einer echten Bergbahn.
@@ -19,39 +19,46 @@ Inoffizielles Demoprojekt, keine Verbindung zu einer echten Bergbahn.
 
 Alle Tools lesen nur (`readOnlyHint`).
 
-## Lokal starten
+## Lokal
 
 ```bash
-python -m venv .venv && . .venv/bin/activate
-pip install -e ".[dev]"
-pytest                      # Tests
-bergbahn-mcp                # HTTP-Server auf http://localhost:8000/mcp
+npm install
+npm test           # Tests
+npm run dev        # Worker lokal: http://localhost:8787/mcp
 npx @modelcontextprotocol/inspector   # zum Ausprobieren im Browser
 ```
 
+## Veröffentlichen (Cloudflare Workers)
+
+Jeder Push nach `main` testet und veröffentlicht den Worker automatisch (`.github/workflows/deploy.yml`). Einmalig nötig:
+
+1. Cloudflare-Konto (Gratis-Plan genügt). Account-ID steht im Dashboard unter «Workers & Pages».
+2. API-Token erstellen: My Profile → API Tokens → Vorlage «Edit Cloudflare Workers».
+3. Im GitHub-Repo unter Settings → Secrets and variables → Actions zwei Secrets anlegen: `CLOUDFLARE_ACCOUNT_ID` und `CLOUDFLARE_API_TOKEN`.
+
+Danach ist der Server unter `https://bergbahn-mcp.<subdomain>.workers.dev/mcp` erreichbar.
+
 ## Einbinden
 
-**Claude Code als Plugin** (läuft lokal über `uvx`, kein Hosting nötig):
+**Claude.ai / Claude Desktop:** Einstellungen → Connectors → «Custom Connector» → URL `https://…workers.dev/mcp`.
+
+**ChatGPT:** Developer Mode einschalten, dann App/Connector mit derselben URL anlegen.
+
+**Claude Code als Plugin:**
 
 ```
 /plugin marketplace add stefaneicher/bergbahn-mcp
 /plugin install bergbahn-info@bergbahn
 ```
 
-**Claude.ai / Claude Desktop:** Server hosten (siehe unten), dann Einstellungen → Connectors → «Custom Connector» → `https://<host>/mcp`.
-
-**ChatGPT:** Developer Mode einschalten, dann App/Connector mit der URL `https://<host>/mcp` anlegen.
-
-## Hosten
-
-Das `Dockerfile` läuft auf jedem Container-Dienst (z. B. Render, Fly.io). Der Dienst setzt `PORT`; der Server hört auf `/mcp`.
-
 ## Aufbau
 
 ```
-src/bergbahn_mcp/server.py   Tools (FastMCP)
-src/bergbahn_mcp/daten.json  Testdaten
-tests/                       Tests (in-memory, ohne Netz)
-.claude-plugin/              Plugin und Marketplace für Claude Code
-.mcp.json                    MCP-Konfiguration des Plugins
+src/index.ts      Worker: Endpunkt /mcp (Streamable HTTP, zustandslos)
+src/tools.ts      die fünf Tools
+src/daten.json    Testdaten
+test/             Tests (Vitest)
+wrangler.toml     Cloudflare-Konfiguration
+.claude-plugin/   Plugin und Marketplace für Claude Code
+.mcp.json         MCP-Konfiguration des Plugins (URL des Workers)
 ```

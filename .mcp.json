@@ -1,9 +1,8 @@
 {
   "mcpServers": {
     "bergbahn": {
-      "command": "uvx",
-      "args": ["--from", "git+https://github.com/stefaneicher/bergbahn-mcp", "bergbahn-mcp"],
-      "env": {"MCP_TRANSPORT": "stdio"}
+      "type": "http",
+      "url": "https://bergbahn-mcp.DEINE-SUBDOMAIN.workers.dev/mcp"
     }
   }
 }
