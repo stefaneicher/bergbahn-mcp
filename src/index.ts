@@ -1,6 +1,7 @@
 // Cloudflare Worker: nimmt MCP-Anfragen unter /mcp entgegen (Streamable HTTP, ohne Sitzungen).
 
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
+import { datenschutz, ICON_SVG, nutzungsbedingungen, startseite } from "./seiten";
 import { createServer } from "./tools";
 
 const CORS = {
@@ -28,10 +29,13 @@ export default {
       return new Response(antwort.body, { status: antwort.status, headers });
     }
 
-    if (pathname === "/") {
-      return new Response("Bergbahn-Info: Demo-MCP-Server. Endpunkt: /mcp\n", {
-        headers: { "Content-Type": "text/plain; charset=utf-8" },
-      });
+    if (request.method === "GET") {
+      if (pathname === "/") return startseite();
+      if (pathname === "/datenschutz" || pathname === "/privacy") return datenschutz();
+      if (pathname === "/nutzungsbedingungen" || pathname === "/terms") return nutzungsbedingungen();
+      if (pathname === "/icon.svg") {
+        return new Response(ICON_SVG, { headers: { "Content-Type": "image/svg+xml", "Cache-Control": "public, max-age=86400" } });
+      }
     }
     return new Response("Nicht gefunden\n", { status: 404 });
   },

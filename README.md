@@ -51,13 +51,20 @@ Danach ist der Server unter `https://bergbahn-mcp.stefan-eicher.workers.dev/mcp`
 /plugin install bergbahn-info@bergbahn
 ```
 
+## Öffentliches Verzeichnis
+
+Angaben für die Einreichung bei Anthropic und OpenAI: [docs/einreichung.md](docs/einreichung.md). Datenschutz: https://bergbahn-mcp.stefan-eicher.workers.dev/privacy, Nutzungsbedingungen: https://bergbahn-mcp.stefan-eicher.workers.dev/terms.
+
 ## Aufbau
 
 ```
 src/index.ts      Worker: Endpunkt /mcp (Streamable HTTP, zustandslos)
 src/tools.ts      die fünf Tools
+src/seiten.ts     Startseite, Datenschutz, Nutzungsbedingungen, Icon
 src/daten.json    Testdaten
 test/             Tests (Vitest)
+assets/           Icon (SVG, PNG)
+docs/             Einreichung Verzeichnisse
 wrangler.toml     Cloudflare-Konfiguration
 .claude-plugin/   Plugin und Marketplace für Claude Code
 .mcp.json         MCP-Konfiguration des Plugins (URL des Workers)

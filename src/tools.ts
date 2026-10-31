@@ -9,7 +9,9 @@ import daten from "./daten.json";
 type Gebiet = keyof typeof daten.gebiete;
 const gebiet = z.enum(["sonnenhang", "gletscherblick"]);
 const status = z.enum(["offen", "geschlossen"]);
-const NUR_LESEN = { readOnlyHint: true, openWorldHint: false };
+// Alle Tools lesen nur. Die Hinweise steuern, ob Claude/ChatGPT vor dem Aufruf nachfragen.
+const NUR_LESEN = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false };
+const DEMO = " Demodaten des erfundenen Skigebiets Eigerblick.";
 
 /** Antwort als JSON-Text, so wie es Claude und ChatGPT erwarten. */
 const json = (wert: unknown) => ({ content: [{ type: "text" as const, text: JSON.stringify(wert, null, 2) }] });
@@ -17,7 +19,7 @@ const fehler = (text: string) => ({ content: [{ type: "text" as const, text }], 
 
 export function createServer(fetchFn: typeof fetch = fetch): McpServer {
   const server = new McpServer(
-    { name: "Bergbahn-Info", version: "0.2.0" },
+    { name: "Bergbahn-Info", version: "0.3.0" },
     {
       instructions:
         "Auskunft über das erfundene Skigebiet Eigerblick (Gebiete «sonnenhang» und «gletscherblick»): " +
@@ -29,7 +31,8 @@ export function createServer(fetchFn: typeof fetch = fetch): McpServer {
   server.registerTool(
     "list_lifts",
     {
-      description: "Bahnen und Lifte mit Typ, Status (offen/geschlossen) und Betriebszeit.",
+      title: "Lifte auflisten",
+      description: "Bahnen und Lifte mit Typ, Status (offen/geschlossen) und Betriebszeit." + DEMO,
       inputSchema: { gebiet: gebiet.optional(), status: status.optional() },
       annotations: NUR_LESEN,
     },
@@ -44,7 +47,8 @@ export function createServer(fetchFn: typeof fetch = fetch): McpServer {
   server.registerTool(
     "get_lift_status",
     {
-      description: "Detailstatus einer Bahn: Wartezeit in Minuten und Grund bei Schliessung.",
+      title: "Liftstatus abfragen",
+      description: "Detailstatus einer Bahn: Wartezeit in Minuten und Grund bei Schliessung." + DEMO,
       inputSchema: { lift_id: z.string().describe("z. B. sh-gondel, aus list_lifts") },
       annotations: NUR_LESEN,
     },
@@ -58,7 +62,8 @@ export function createServer(fetchFn: typeof fetch = fetch): McpServer {
   server.registerTool(
     "list_slopes",
     {
-      description: "Pisten mit Schwierigkeit, Status und Datum der letzten Präparation.",
+      title: "Pisten auflisten",
+      description: "Pisten mit Schwierigkeit, Status und Datum der letzten Präparation." + DEMO,
       inputSchema: {
         gebiet: gebiet.optional(),
         schwierigkeit: z.enum(["blau", "rot", "schwarz"]).optional(),
@@ -80,8 +85,10 @@ export function createServer(fetchFn: typeof fetch = fetch): McpServer {
   server.registerTool(
     "get_snow_report",
     {
+      title: "Schneebericht abrufen",
       description:
-        "Schneebericht: Schneehöhe Berg/Tal, Neuschnee, Lawinenstufe (1–5), Wetter, dazu Anzahl offener Lifte und Pisten.",
+        "Schneebericht: Schneehöhe Berg/Tal, Neuschnee, Lawinenstufe (1–5), Wetter, dazu Anzahl offener Lifte und Pisten." +
+        DEMO,
       inputSchema: { gebiet },
       annotations: NUR_LESEN,
     },
@@ -102,6 +109,7 @@ export function createServer(fetchFn: typeof fetch = fetch): McpServer {
   server.registerTool(
     "search_connections",
     {
+      title: "Zugverbindungen suchen",
       description: "Echte Zugverbindungen in der Schweiz (transport.opendata.ch). Ohne Datum/Zeit: ab jetzt.",
       inputSchema: {
         von: z.string().describe("Abfahrtsort, z. B. Interlaken Ost"),
@@ -110,7 +118,7 @@ export function createServer(fetchFn: typeof fetch = fetch): McpServer {
         zeit: z.string().regex(/^\d{2}:\d{2}$/).optional().describe("HH:MM"),
         anzahl: z.number().int().min(1).max(6).default(4),
       },
-      annotations: { readOnlyHint: true, openWorldHint: true },
+      annotations: { ...NUR_LESEN, openWorldHint: true },
     },
     async ({ von, nach, datum, zeit, anzahl }) => {
       const url = new URL("https://transport.opendata.ch/v1/connections");

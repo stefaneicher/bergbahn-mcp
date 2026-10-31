@@ -26,7 +26,8 @@ describe("Tools", () => {
     expect(tools.map((t) => t.name).sort()).toEqual(
       ["get_lift_status", "get_snow_report", "list_lifts", "list_slopes", "search_connections"],
     );
-    expect(tools.every((t) => t.annotations?.readOnlyHint)).toBe(true);
+    expect(tools.every((t) => t.annotations?.readOnlyHint && t.annotations.destructiveHint === false)).toBe(true);
+    expect(tools.every((t) => t.title)).toBe(true);
   });
 
   it("filtert offene Lifte im Gebiet", async () => {
@@ -96,6 +97,10 @@ describe("Worker", () => {
   it("führt ein Tool über HTTP aus", async () => {
     const r = await post({ jsonrpc: "2.0", id: 2, method: "tools/call", params: { name: "get_snow_report", arguments: { gebiet: "sonnenhang" } } });
     expect(JSON.parse(((await r.json()) as any).result.content[0].text).lawinenstufe).toBe(2);
+  });
+
+  it.each(["/", "/datenschutz", "/privacy", "/nutzungsbedingungen", "/terms", "/icon.svg"])("liefert %s aus", async (pfad) => {
+    expect((await worker.fetch(new Request("https://x.dev" + pfad))).status).toBe(200);
   });
 
   it("gibt 404 für andere Pfade", async () => {

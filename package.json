@@ -1,6 +1,6 @@
 {
   "name": "bergbahn-mcp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Demo-MCP-Server auf Cloudflare Workers: Bahnen, Lifte, Pisten und Zugverbindungen",
   "scripts": {
     "dev": "wrangler dev",
