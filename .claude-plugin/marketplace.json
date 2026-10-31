@@ -1,0 +1,11 @@
+{
+  "name": "bergbahn",
+  "owner": {"name": "Stefan Eicher"},
+  "plugins": [
+    {
+      "name": "bergbahn-info",
+      "source": "./",
+      "description": "Demo-MCP: Bahnen, Lifte, Pisten, Schneebericht und Zugverbindungen."
+    }
+  ]
+}

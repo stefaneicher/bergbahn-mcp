@@ -1,0 +1,30 @@
+{
+  "stand": "2026-12-20T07:30:00+01:00",
+  "gebiete": {
+    "sonnenhang": {
+      "name": "Sonnenhang",
+      "schnee": {"berg_cm": 120, "tal_cm": 35, "neuschnee_24h_cm": 15, "lawinenstufe": 2, "wetter": "sonnig, -6 °C auf dem Gipfel"}
+    },
+    "gletscherblick": {
+      "name": "Gletscherblick",
+      "schnee": {"berg_cm": 180, "tal_cm": 60, "neuschnee_24h_cm": 25, "lawinenstufe": 3, "wetter": "bewölkt, Wind 40 km/h, -11 °C"}
+    }
+  },
+  "lifte": [
+    {"id": "sh-gondel", "gebiet": "sonnenhang", "name": "Gondelbahn Talstation–Alp Sonnig", "typ": "Gondelbahn", "status": "offen", "betriebszeit": "08:00–16:30", "wartezeit_min": 10, "grund": null},
+    {"id": "sh-sessel-1", "gebiet": "sonnenhang", "name": "Sesselbahn Murmeltier", "typ": "Sesselbahn", "status": "offen", "betriebszeit": "08:30–16:15", "wartezeit_min": 5, "grund": null},
+    {"id": "sh-skilift-kinder", "gebiet": "sonnenhang", "name": "Kinderlift Zwergli", "typ": "Skilift", "status": "offen", "betriebszeit": "09:00–16:00", "wartezeit_min": 0, "grund": null},
+    {"id": "sh-skilift-grat", "gebiet": "sonnenhang", "name": "Skilift Grat", "typ": "Skilift", "status": "geschlossen", "betriebszeit": "09:00–16:00", "wartezeit_min": null, "grund": "Revision"},
+    {"id": "gb-zahnrad", "gebiet": "gletscherblick", "name": "Zahnradbahn Gletscherblick", "typ": "Zahnradbahn", "status": "offen", "betriebszeit": "07:30–17:30", "wartezeit_min": 15, "grund": null},
+    {"id": "gb-sessel-eis", "gebiet": "gletscherblick", "name": "Sesselbahn Eisfeld", "typ": "Sesselbahn", "status": "geschlossen", "betriebszeit": "08:30–16:00", "wartezeit_min": null, "grund": "Wind"},
+    {"id": "gb-skilift-firn", "gebiet": "gletscherblick", "name": "Skilift Firn", "typ": "Skilift", "status": "offen", "betriebszeit": "09:00–16:00", "wartezeit_min": 0, "grund": null}
+  ],
+  "pisten": [
+    {"id": "sh-1", "gebiet": "sonnenhang", "name": "1 Familienabfahrt", "schwierigkeit": "blau", "status": "offen", "praepariert_am": "2026-12-20"},
+    {"id": "sh-2", "gebiet": "sonnenhang", "name": "2 Murmeltier", "schwierigkeit": "rot", "status": "offen", "praepariert_am": "2026-12-20"},
+    {"id": "sh-3", "gebiet": "sonnenhang", "name": "3 Gratschuss", "schwierigkeit": "schwarz", "status": "geschlossen", "praepariert_am": null},
+    {"id": "gb-10", "gebiet": "gletscherblick", "name": "10 Gletscherpiste", "schwierigkeit": "rot", "status": "offen", "praepariert_am": "2026-12-19"},
+    {"id": "gb-11", "gebiet": "gletscherblick", "name": "11 Eisfeld", "schwierigkeit": "schwarz", "status": "geschlossen", "praepariert_am": null},
+    {"id": "gb-12", "gebiet": "gletscherblick", "name": "12 Firnweg", "schwierigkeit": "blau", "status": "offen", "praepariert_am": "2026-12-20"}
+  ]
+}
