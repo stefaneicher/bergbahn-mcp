@@ -36,11 +36,11 @@ Jeder Push nach `main` testet und veröffentlicht den Worker automatisch (`.gith
 2. API-Token erstellen: My Profile → API Tokens → Vorlage «Edit Cloudflare Workers».
 3. Im GitHub-Repo unter Settings → Secrets and variables → Actions das Secret `CLOUDFLARE_API_TOKEN` anlegen.
 
-Danach ist der Server unter `https://bergbahn-mcp.<subdomain>.workers.dev/mcp` erreichbar.
+Danach ist der Server unter `https://bergbahn-mcp.stefan-eicher.workers.dev/mcp` erreichbar.
 
 ## Einbinden
 
-**Claude.ai / Claude Desktop:** Einstellungen → Connectors → «Custom Connector» → URL `https://…workers.dev/mcp`.
+**Claude.ai / Claude Desktop:** Einstellungen → Connectors → «Custom Connector» → URL `https://bergbahn-mcp.stefan-eicher.workers.dev/mcp`.
 
 **ChatGPT:** Developer Mode einschalten, dann App/Connector mit derselben URL anlegen.
 

@@ -2,7 +2,7 @@
   "mcpServers": {
     "bergbahn": {
       "type": "http",
-      "url": "https://bergbahn-mcp.DEINE-SUBDOMAIN.workers.dev/mcp"
+      "url": "https://bergbahn-mcp.stefan-eicher.workers.dev/mcp"
     }
   }
 }
